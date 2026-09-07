@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyUtahSpot | Encuentra Servicios y Negocios en Utah</title>
+    <!-- Tailwind CSS (Framework de diseño) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandBlue: '#0F172A',
+                        brandAccent: '#2563EB',
+                        brandSpot: '#F59E0B'
+                    },
+                    animation: {
+                        marquee: 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Librería de Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Pausar carrusel publicitario al pasar el mouse */
+        .marquee-container:hover .marquee-content {
+            animation-play-state: paused;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- NAV BAR / ENCABEZADO -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo MyUtahSpot -->
+            <a href="#" onclick="resetFilter()" class="flex items-center gap-2">
+                <span class="bg-brandAccent text-white font-black text-xl px-2.5 py-1 rounded-lg">My</span>
+                <span class="font-bold text-xl tracking-tight text-brandBlue">UtahSpot<span class="text-brandSpot">.com</span></span>
+            </a>
+
+            <!-- Acciones -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleModal(true)" class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-brandAccent transition">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Publicar Servicio
+                </button>
+                <button onclick="toggleModal(true)" class="bg-brandAccent hover:bg-blue-700 text-white font-medium text-sm px-4 py-2 rounded-lg shadow-sm transition">
+                    Publicar Gratis
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO / SECCIÓN PRINCIPAL CON BUSCADOR -->
+    <section class="bg-gradient-to-br from-brandBlue via-slate-900 to-slate-800 text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center space-y-6">
+            <span class="inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                Directorio Oficial de Utah & Orem
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                Encuentra expertos de confianza y negocios locales en Utah
+            </h1>
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
+                Desde servicios para el hogar hasta los mejores rincones de la ciudad. Verificados y cerca de ti.
+            </p>
+
+            <!-- BARRA DE BÚSQUEDA Y FILTRO -->
+            <div class="bg-white p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 max-w-3xl mx-auto text-slate-800">
+                <div class="flex-1 flex items-center px-3 gap-2 border-b md:border-b-0 md:border-r border-slate-200 py-2 md:py-0">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                    <input id="searchInput" type="text" placeholder="¿Qué servicio o negocio buscas?" class="w-full focus:outline-none text-sm">
+                </div>
+                <div class="w-full md:w-48 flex items-center px-3 gap-2 py-2 md:py-0">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
+                    <select id="locationSelect" class="w-full focus:outline-none text-sm bg-transparent cursor-pointer">
+                        <option value="all">Todo Utah</option>
+                        <option value="Orem">Orem</option>
+                        <option value="Provo">Provo</option>
+                        <option value="Salt Lake City">Salt Lake City</option>
+                        <option value="Vineyard">Vineyard</option>
+                    </select>
+                </div>
+                <button id="searchBtn" class="bg-brandAccent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition flex items-center justify-center gap-2">
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PASARELA CONTINUA DE EMPRESAS PATROCINADORAS (CARRUSEL INIFINITO) -->
+    <section class="bg-slate-900 border-y border-slate-800 py-2.5 overflow-hidden marquee-container relative">
+        <div class="flex items-center max-w-7xl mx-auto px-4">
+            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider whitespace-nowrap pr-4 z-10 bg-slate-900 shadow-lg flex items-center gap-1">
+                <i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> Patrocinadores
+            </span>
+            <div class="overflow-hidden w-full relative">
+                <div class="flex whitespace-nowrap animate-marquee marquee-content gap-6 items-center" id="sponsorsContainer">
+                    <!-- Se inyecta automáticamente con JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORÍAS RÁPIDAS -->
+    <section class="max-w-7xl mx-auto px-4 py-8 w-full">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Explorar por categoría</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="categoriesContainer">
+            <!-- Renderizado dinámico desde JS -->
+        </div>
+    </section>
+
+    <!-- LISTADO DE NEGOCIOS Y SERVICIOS -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h3 class="text-xl font-bold text-slate-900" id="sectionTitle">Todos los Servicios y Negocios</h3>
+                <p class="text-xs text-slate-500">Negocios y profesionales listos para atenderte en Utah</p>
+            </div>
+            <button onclick="resetFilter()" class="text-xs font-semibold text-brandAccent hover:underline">Ver Todos</button>
+        </div>
+
+        <!-- REJILLA DINÁMICA DE TARJETAS (SPOTS) -->
+        <div id="spotsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Renderizado dinámico desde JS -->
+        </div>
+    </main>
+
+    <!-- FOOTER / PIE DE PÁGINA -->
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 mt-12">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>© 2026 <strong>MyUtahSpot.com</strong> - Todos los derechos reservados. Diseñado para la comunidad de Utah.</p>
+            <p class="text-slate-400">MyUtahSpot es una plataforma de conexión informativa y directorio comercial.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL DE REGISTRO GRATUITO DE NEGOCIO -->
+    <div id="registerModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="bg-slate-900 text-white p-6 flex items-center justify-between sticky top-0 z-10">
+                <div>
+                    <h3 class="font-bold text-lg">Publica Tu Negocio Gratis</h3>
+                    <p class="text-xs text-slate-400">Aparece en el directorio de Utah en menos de 2 minutos</p>
+                </div>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <form id="addSpotForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Negocio o Servicio *</label>
+                    <input type="text" id="formTitle" required placeholder="Ej. Limpieza Residencial Orem" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Categoría *</label>
+                        <select id="formCategory" required class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                            <!-- Se puebla dinámicamente -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ciudad *</label>
+                        <select id="formCity" required class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                            <option value="Orem">Orem</option>
+                            <option value="Provo">Provo</option>
+                            <option value="Salt Lake City">Salt Lake City</option>
+                            <option value="Vineyard">Vineyard</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Teléfono / WhatsApp *</label>
+                    <input type="text" id="formPhone" required placeholder="(801) 000-0000" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Descripción Breve *</label>
+                    <textarea id="formDescription" required rows="3" placeholder="Describe los servicios que ofreces..." class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent"></textarea>
+                </div>
+
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="toggleModal(false)" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800">Cancelar</button>
+                    <button type="submit" class="bg-brandAccent hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm transition">Publicar Ahora</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- BASE DE DATOS Y LÓGICA DE JAVASCRIPT -->
+    <script>
+        // 1. LISTA COMPLETA DE CATEGORÍAS (AMPLIADA)
+        const CATEGORIES = [
+            { id: 'limpieza', name: 'Limpieza', icon: 'sparkles' },
+            { id: 'plomeria', name: 'Plomería', icon: 'wrench' },
+            { id: 'computacion', name: 'Soporte Tech / Laptops', icon: 'laptop' },
+            { id: 'restaurantes', name: 'Restaurantes & Comida', icon: 'utensils' },
+            { id: 'automotriz', name: 'Mecánica & AutoDetail', icon: 'car' },
+            { id: 'remodelacion', name: 'Construcción / Pintura', icon: 'home' },
+            { id: 'jardineria', name: 'Jardinería & Paisajismo', icon: 'flower-2' },
+            { id: 'bienesraices', name: 'Bienes Raíces / Rentas', icon: 'building-2' },
+            { id: 'belleza', name: 'Belleza & Barbería', icon: 'scissors' },
+            { id: 'clases', name: 'Clases & Tutorías', icon: 'graduations-cap' },
+            { id: 'eventos', name: 'Fiestas & Eventos', icon: 'party-popper' },
+            { id: 'cuidados', name: 'Cuidado de Niños / Mascotas', icon: 'heart' }
+        ];
+
+        // 2. EMPRESAS PATROCINADORAS QUE PAGAN PUBLICIDAD (PASARELA MARQUEE)
+        const SPONSORS = [
+            { name: 'Appline Studio Tech', tag: 'Soporte & Web', city: 'Utah' },
+            { name: 'Pro Clean Crew', tag: 'Limpieza Pro', city: 'Orem' },
+            { name: 'Zentaurix Marketing', tag: 'Diseño & Redes', city: 'Vineyard' },
+            { name: 'Utah Valley Real Estate', tag: 'Agencia Inmobiliaria', city: 'Provo' },
+            { name: 'Megastore Utah', tag: 'Envíos & Variedades', city: 'SLC' },
+            { name: 'AutoDetail Express', tag: 'Lavado a Domicilio', city: 'Orem' }
+        ];
+
+        // 3. BASE DE DATOS INICIAL DE NEGOCIOS Y SERVICIOS
+        let SPOTS_DATA = [
+            {
+                id: 'spot-001',
+                title: 'Pro Clean Crew Utah',
+                category: 'limpieza',
+                city: 'Orem',
+                phone: '(801) 555-0192',
+                description: 'Servicio profesional de limpieza residencial y comercial. Garantía de satisfacción total.',
+                isPro: true,
+                bannerImg: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80',
+                rating: 4.9,
+                badgeText: 'Verificado Pro'
+            },
+            {
+                id: 'spot-002',
+                title: 'Servicio Técnico Express & Redes',
+                category: 'computacion',
+                city: 'Vineyard',
+                phone: '(385) 555-0143',
+                description: 'Reparación de computadoras, mantenimiento preventivo, instalación de redes e impresoras.',
+                isPro: true,
+                bannerImg: 'https://images.unsplash.com/photo-1597872250970-45d00a89a01f?auto=format&fit=crop&w=600&q=80',
+                rating: 5.0,
+                badgeText: 'Destacado'
+            },
+            {
+                id: 'spot-003',
+                title: 'Juan Plomería & Mantenimiento',
+                category: 'plomeria',
+                city: 'Provo',
+                phone: '(801) 555-0888',
+                description: 'Reparación de fugas, calentadores de agua e instalaciones de tuberías generales.',
+                isPro: false,
+                bannerImg: null,
+                rating: 4.5,
+                badgeText: 'Gratis'
+            }
+        ];
+
+        // 4. INICIALIZACIÓN
+        document.addEventListener('DOMContentLoaded', () => {
+            initCategories();
+            initSponsors();
+            renderSpots(SPOTS_DATA);
+            populateCategorySelect();
+
+            document.getElementById('searchBtn').addEventListener('click', handleSearch);
+            document.getElementById('addSpotForm').addEventListener('submit', handleAddSpot);
+        });
+
+        // 5. RENDERIZAR BANDERAS / BOTONES DE CATEGORÍA
+        function initCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = CATEGORIES.map(cat => `
+                <button onclick="filterByCategory('${cat.id}')" class="flex flex-col items-center justify-center p-3 bg-white border border-slate-200 rounded-xl hover:border-brandAccent hover:shadow-sm transition group cursor-pointer text-center">
+                    <i data-lucide="${cat.icon || 'tag'}" class="w-5 h-5 text-slate-500 group-hover:text-brandAccent mb-1"></i>
+                    <span class="text-xs font-semibold text-slate-700 leading-tight">${cat.name}</span>
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // 6. RENDERIZAR PASARELA CONTINUA DE PATROCINADORES (MARQUEE)
+        function initSponsors() {
+            const container = document.getElementById('sponsorsContainer');
+            
+            // Duplicamos la lista para garantizar un ciclo infinito continuo
+            const fullSponsors = [...SPONSORS, ...SPONSORS, ...SPONSORS];
+
+            container.innerHTML = fullSponsors.map(item => `
+                <div class="inline-flex items-center gap-2 bg-slate-800/80 border border-slate-700/60 px-3 py-1 rounded-full text-xs hover:border-brandAccent transition cursor-pointer">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="font-bold text-slate-200">${item.name}</span>
+                    <span class="text-[10px] text-slate-400 border-l border-slate-700 pl-2">${item.tag}</span>
+                    <span class="text-[9px] bg-slate-700 text-slate-300 px-1.5 py-0.5 rounded">${item.city}</span>
+                </div>
+            `).join('');
+        }
+
+        // 7. POBLAR DESPLEGABLE DEL FORMULARIO
+        function populateCategorySelect() {
+            const select = document.getElementById('formCategory');
+            select.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+        }
+
+        // 8. RENDERIZAR TARJETAS EN LA REJILLA
+        function renderSpots(spots) {
+            const grid = document.getElementById('spotsGrid');
+            
+            if (spots.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">No se encontraron resultados en esta zona o categoría.</div>`;
+                return;
+            }
+
+            grid.innerHTML = spots.map(spot => `
+                <div class="bg-white rounded-xl border ${spot.isPro ? 'border-brandAccent/40 shadow-md ring-1 ring-brandAccent/10' : 'border-slate-200'} overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <!-- Encabezado / Banner Visual -->
+                        ${spot.bannerImg 
+                            ? `<div class="h-40 w-full bg-cover bg-center relative" style="background-image: url('${spot.bannerImg}')">
+                                <span class="absolute top-3 right-3 bg-brandBlue/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-md">
+                                    ${spot.badgeText}
+                                </span>
+                               </div>`
+                            : `<div class="h-16 bg-slate-100 border-b border-slate-100 flex items-center px-4 justify-between">
+                                <span class="bg-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-1 rounded">Perfil Estándar</span>
+                                <span class="text-xs text-slate-400 font-medium">Gratis</span>
+                               </div>`
+                        }
+
+                        <div class="p-5">
+                            <div class="flex items-start justify-between gap-2">
+                                <h4 class="font-bold text-slate-900 text-lg leading-snug">${spot.title}</h4>
+                                <span class="text-xs font-semibold text-amber-500 flex items-center gap-1">
+                                    ★ ${spot.rating || '5.0'}
+                                </span>
+                            </div>
+                            <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${spot.city}, Utah
+                            </p>
+                            <p class="text-sm text-slate-600 mt-3 line-clamp-2">${spot.description}</p>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Contacto / Teléfono -->
+                    <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-700">${spot.phone}</span>
+                        <a href="https://wa.me/1${spot.phone.replace(/\D/g,'')}" target="_blank" class="bg-slate-900 hover:bg-brandAccent text-white text-xs font-medium px-3 py-1.5 rounded-md transition flex items-center gap-1">
+                            Contactar
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        // 9. BÚSQUEDA Y FILTROS
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const city = document.getElementById('locationSelect').value;
+
+            const filtered = SPOTS_DATA.filter(spot => {
+                const matchesQuery = spot.title.toLowerCase().includes(query) || spot.description.toLowerCase().includes(query);
+                const matchesCity = city === 'all' || spot.city === city;
+                return matchesQuery && matchesCity;
+            });
+
+            document.getElementById('sectionTitle').innerText = 'Resultados de Búsqueda';
+            renderSpots(filtered);
+        }
+
+        function filterByCategory(catId) {
+            const filtered = SPOTS_DATA.filter(spot => spot.category === catId);
+            const catObj = CATEGORIES.find(c => c.id === catId);
+            document.getElementById('sectionTitle').innerText = `Categoría: ${catObj ? catObj.name : catId}`;
+            renderSpots(filtered);
+        }
+
+        function resetFilter() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('locationSelect').value = 'all';
+            document.getElementById('sectionTitle').innerText = 'Todos los Servicios y Negocios';
+            renderSpots(SPOTS_DATA);
+        }
+
+        // 10. CONTROL DEL MODAL Y REGISTRO DE NUEVO NEGOCIO
+        function toggleModal(show) {
+            const modal = document.getElementById('registerModal');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function handleAddSpot(e) {
+            e.preventDefault();
+
+            const newSpot = {
+                id: `spot-${Date.now()}`,
+                title: document.getElementById('formTitle').value,
+                category: document.getElementById('formCategory').value,
+                city: document.getElementById('formCity').value,
+                phone: document.getElementById('formPhone').value,
+                description: document.getElementById('formDescription').value,
+                isPro: false,
+                bannerImg: null,
+                rating: 5.0,
+                badgeText: 'Nuevo'
+            };
+
+            SPOTS_DATA.unshift(newSpot);
+
+            document.getElementById('addSpotForm').reset();
+            toggleModal(false);
+
+            resetFilter();
+            alert('¡Tu negocio ha sido publicado con éxito en MyUtahSpot!');
+        }
+    </script>
+</body>
+</html>
