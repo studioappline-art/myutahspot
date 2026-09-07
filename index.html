@@ -2,161 +2,85 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MyUtahSpot | Encuentra Servicios y Negocios en Utah</title>
-    <meta name="description" content="Directorio comunitario de negocios y servicios locales en Utah. Busca por ciudad y categoría, contacta por WhatsApp y publica tu negocio gratis en menos de un minuto.">
-
-    <!-- Open Graph: para que el enlace se vea bien al compartirlo -->
-    <meta property="og:title" content="MyUtahSpot.com — Negocios y servicios locales en Utah">
-    <meta property="og:description" content="Publica tu negocio gratis y llega a más clientes en Utah. Búscalo, encuéntralo, contáctalo.">
-    <meta property="og:type" content="website">
-
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📍</text></svg>">
-
-    <!-- Fuentes: Space Grotesk para titulares con carácter, Inter para lectura -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (Framework de diseño) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        display: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
                     colors: {
                         brandBlue: '#0F172A',
                         brandAccent: '#2563EB',
                         brandSpot: '#F59E0B'
                     },
                     animation: {
-                        marquee: 'marquee 32s linear infinite',
-                        fadeUp: 'fadeUp .6s cubic-bezier(.16,1,.3,1) both',
-                        popIn: 'popIn .35s cubic-bezier(.16,1,.3,1) both',
-                        ringPulse: 'ringPulse 1.8s ease-out 2',
+                        marquee: 'marquee 25s linear infinite',
                     },
                     keyframes: {
                         marquee: {
                             '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-33.333%)' },
-                        },
-                        fadeUp: {
-                            '0%': { opacity: 0, transform: 'translateY(14px)' },
-                            '100%': { opacity: 1, transform: 'translateY(0)' },
-                        },
-                        popIn: {
-                            '0%': { opacity: 0, transform: 'scale(.96)' },
-                            '100%': { opacity: 1, transform: 'scale(1)' },
-                        },
-                        ringPulse: {
-                            '0%': { boxShadow: '0 0 0 0 rgba(37,99,235,.45)' },
-                            '100%': { boxShadow: '0 0 0 12px rgba(37,99,235,0)' },
+                            '100%': { transform: 'translateX(-50%)' },
                         }
                     }
                 }
             }
         }
     </script>
-
-    <!-- Iconos Lucide -->
+    <!-- Librería de Iconos Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
     <style>
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', system-ui, sans-serif; }
-        .font-display { font-family: 'Space Grotesk', system-ui, sans-serif; }
-
-        /* Pausar carrusel al pasar el mouse o al tocar */
-        .marquee-container:hover .marquee-content,
-        .marquee-container:active .marquee-content {
+        /* Pausar carrusel publicitario al pasar el mouse */
+        .marquee-container:hover .marquee-content {
             animation-play-state: paused;
         }
-
-        /* Foco visible accesible en toda la página */
-        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
-            outline: 2px solid #2563EB;
-            outline-offset: 2px;
-        }
-
-        /* Fondo tipo mapa muy sutil para el hero */
-        .map-dots {
-            background-image: radial-gradient(rgba(255,255,255,0.09) 1px, transparent 1px);
-            background-size: 22px 22px;
-        }
-
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* Respeta la preferencia de movimiento reducido del sistema */
-        @media (prefers-reduced-motion: reduce) {
-            *, .animate-marquee, .animate-fadeUp, .animate-popIn, .animate-ringPulse {
-                animation: none !important;
-                transition: none !important;
-                scroll-behavior: auto !important;
-            }
-        }
-
-        /* Zona segura para notch en móviles (FAB y toast) */
-        .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen font-sans">
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
 
     <!-- NAV BAR / ENCABEZADO -->
-    <header class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-40">
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <a href="#" onclick="resetFilter(); return false;" class="flex items-center gap-2 shrink-0">
-                <span class="bg-brandAccent text-white font-display font-bold text-xl px-2.5 py-1 rounded-lg">My</span>
-                <span class="font-display font-bold text-xl tracking-tight text-brandBlue">UtahSpot<span class="text-brandSpot">.com</span></span>
+            <!-- Logo MyUtahSpot -->
+            <a href="#" onclick="resetFilter()" class="flex items-center gap-2">
+                <span class="bg-brandAccent text-white font-black text-xl px-2.5 py-1 rounded-lg">My</span>
+                <span class="font-bold text-xl tracking-tight text-brandBlue">UtahSpot<span class="text-brandSpot">.com</span></span>
             </a>
 
-            <div class="flex items-center gap-2 sm:gap-3">
-                <button onclick="shareSite(false)" aria-label="Compartir MyUtahSpot" class="w-10 h-10 sm:w-auto sm:px-3 inline-flex items-center justify-center gap-1.5 text-sm font-medium text-slate-600 hover:text-brandAccent hover:bg-slate-50 rounded-lg transition">
-                    <i data-lucide="share-2" class="w-4 h-4"></i> <span class="hidden sm:inline">Compartir</span>
+            <!-- Acciones -->
+            <div class="flex items-center gap-4">
+                <button onclick="toggleModal(true)" class="hidden sm:inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-brandAccent transition">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Publicar Servicio
                 </button>
-                <button onclick="toggleModal(true)" class="bg-brandAccent hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-sm px-4 py-2.5 rounded-lg shadow-sm shadow-blue-600/20 transition inline-flex items-center gap-1.5">
-                    <i data-lucide="plus" class="w-4 h-4"></i> <span class="hidden xs:inline">Publicar gratis</span><span class="xs:hidden">Publicar</span>
+                <button onclick="toggleModal(true)" class="bg-brandAccent hover:bg-blue-700 text-white font-medium text-sm px-4 py-2 rounded-lg shadow-sm transition">
+                    Publicar Gratis
                 </button>
             </div>
         </div>
     </header>
 
     <!-- HERO / SECCIÓN PRINCIPAL CON BUSCADOR -->
-    <section class="relative bg-gradient-to-br from-brandBlue via-slate-900 to-slate-800 text-white py-16 sm:py-20 px-4 overflow-hidden">
-        <div class="absolute inset-0 map-dots pointer-events-none"></div>
-        <div class="absolute -top-24 -right-24 w-96 h-96 bg-brandAccent/20 rounded-full blur-3xl pointer-events-none"></div>
-
-        <div class="relative max-w-4xl mx-auto text-center space-y-6">
-            <div class="animate-fadeUp inline-flex items-center gap-2 text-sm text-slate-300" style="animation-delay:.05s">
-                <i data-lucide="map-pin" class="w-4 h-4 text-brandSpot"></i>
-                <span id="heroStat">Directorio comunitario de Utah</span>
-            </div>
-
-            <h1 class="animate-fadeUp font-display text-3xl sm:text-5xl font-bold tracking-tight leading-tight" style="animation-delay:.15s">
-                Encuentra a alguien de confianza, cerca de ti, en Utah
+    <section class="bg-gradient-to-br from-brandBlue via-slate-900 to-slate-800 text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center space-y-6">
+            <span class="inline-block bg-blue-500/10 text-blue-400 border border-blue-500/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                Directorio Oficial de Utah & Orem
+            </span>
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+                Encuentra expertos de confianza y negocios locales en Utah
             </h1>
-            <p class="animate-fadeUp text-slate-400 text-base sm:text-lg max-w-2xl mx-auto" style="animation-delay:.25s">
-                Compara negocios locales, lee sus reseñas y contáctalos por WhatsApp en segundos.
+            <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
+                Desde servicios para el hogar hasta los mejores rincones de la ciudad. Verificados y cerca de ti.
             </p>
 
             <!-- BARRA DE BÚSQUEDA Y FILTRO -->
-            <div class="animate-fadeUp bg-white p-2 rounded-xl shadow-2xl shadow-black/20 flex flex-col md:flex-row gap-2 max-w-3xl mx-auto text-slate-800" style="animation-delay:.35s">
-                <label for="searchInput" class="sr-only">Buscar servicio o negocio</label>
-                <div class="flex-1 flex items-center px-3 gap-2 border-b md:border-b-0 md:border-r border-slate-200 py-2.5 md:py-0">
-                    <i data-lucide="search" class="w-5 h-5 text-slate-400 shrink-0"></i>
-                    <input id="searchInput" type="text" placeholder="¿Qué servicio o negocio buscas?" class="w-full focus:outline-none text-sm bg-transparent" autocomplete="off">
+            <div class="bg-white p-2 rounded-xl shadow-xl flex flex-col md:flex-row gap-2 max-w-3xl mx-auto text-slate-800">
+                <div class="flex-1 flex items-center px-3 gap-2 border-b md:border-b-0 md:border-r border-slate-200 py-2 md:py-0">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-400"></i>
+                    <input id="searchInput" type="text" placeholder="¿Qué servicio o negocio buscas?" class="w-full focus:outline-none text-sm">
                 </div>
-                <label for="locationSelect" class="sr-only">Ciudad</label>
-                <div class="w-full md:w-48 flex items-center px-3 gap-2 py-2.5 md:py-0">
-                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400 shrink-0"></i>
+                <div class="w-full md:w-48 flex items-center px-3 gap-2 py-2 md:py-0">
+                    <i data-lucide="map-pin" class="w-5 h-5 text-slate-400"></i>
                     <select id="locationSelect" class="w-full focus:outline-none text-sm bg-transparent cursor-pointer">
                         <option value="all">Todo Utah</option>
                         <option value="Orem">Orem</option>
@@ -165,249 +89,177 @@
                         <option value="Vineyard">Vineyard</option>
                     </select>
                 </div>
-                <button id="searchBtn" class="bg-brandAccent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition flex items-center justify-center gap-2 shrink-0">
+                <button id="searchBtn" class="bg-brandAccent hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition flex items-center justify-center gap-2">
                     Buscar
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- PASARELA CONTINUA DE EMPRESAS PATROCINADORAS -->
+    <!-- PASARELA CONTINUA DE EMPRESAS PATROCINADORAS (CARRUSEL INIFINITO) -->
     <section class="bg-slate-900 border-y border-slate-800 py-2.5 overflow-hidden marquee-container relative">
         <div class="flex items-center max-w-7xl mx-auto px-4">
-            <span class="text-xs font-semibold text-amber-400 whitespace-nowrap pr-4 z-10 bg-slate-900 flex items-center gap-1.5">
-                <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400"></i> Patrocinadores
+            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider whitespace-nowrap pr-4 z-10 bg-slate-900 shadow-lg flex items-center gap-1">
+                <i data-lucide="star" class="w-3 h-3 fill-amber-400"></i> Patrocinadores
             </span>
             <div class="overflow-hidden w-full relative">
-                <div class="flex whitespace-nowrap animate-marquee marquee-content gap-6 items-center" id="sponsorsContainer"></div>
+                <div class="flex whitespace-nowrap animate-marquee marquee-content gap-6 items-center" id="sponsorsContainer">
+                    <!-- Se inyecta automáticamente con JavaScript -->
+                </div>
             </div>
         </div>
     </section>
 
     <!-- CATEGORÍAS RÁPIDAS -->
     <section class="max-w-7xl mx-auto px-4 py-8 w-full">
-        <h2 class="text-sm font-semibold text-slate-500 mb-4">Explorar por categoría</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="categoriesContainer"></div>
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">Explorar por categoría</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3" id="categoriesContainer">
+            <!-- Renderizado dinámico desde JS -->
+        </div>
     </section>
 
     <!-- LISTADO DE NEGOCIOS Y SERVICIOS -->
     <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
-        <div class="flex items-center justify-between mb-6 gap-3">
+        <div class="flex items-center justify-between mb-6">
             <div>
-                <h3 class="text-xl font-display font-bold text-slate-900" id="sectionTitle">Todos los servicios y negocios</h3>
-                <p class="text-xs text-slate-500 mt-0.5" id="sectionSubtitle">Negocios y profesionales listos para atenderte en Utah</p>
+                <h3 class="text-xl font-bold text-slate-900" id="sectionTitle">Todos los Servicios y Negocios</h3>
+                <p class="text-xs text-slate-500">Negocios y profesionales listos para atenderte en Utah</p>
             </div>
-            <button onclick="resetFilter()" class="shrink-0 text-xs font-semibold text-brandAccent hover:underline">Ver todos</button>
+            <button onclick="resetFilter()" class="text-xs font-semibold text-brandAccent hover:underline">Ver Todos</button>
         </div>
 
-        <div id="spotsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        <!-- REJILLA DINÁMICA DE TARJETAS (SPOTS) -->
+        <div id="spotsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Renderizado dinámico desde JS -->
+        </div>
     </main>
 
     <!-- FOOTER / PIE DE PÁGINA -->
-    <footer class="bg-white border-t border-slate-200 py-10 mt-12">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div class="text-center sm:text-left">
-                <p class="text-sm font-display font-bold text-brandBlue">MyUtahSpot<span class="text-brandSpot">.com</span></p>
-                <p class="text-xs text-slate-500 mt-1">© 2026 MyUtahSpot.com — Directorio comunitario de Utah.</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <button onclick="shareSite(true)" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-brandAccent border border-slate-200 hover:border-brandAccent/40 px-3 py-2 rounded-lg transition">
-                    <i data-lucide="link" class="w-3.5 h-3.5"></i> Invitar a un negocio a publicar
-                </button>
-                <button onclick="toggleModal(true)" class="inline-flex items-center gap-1.5 text-xs font-semibold text-white bg-brandBlue hover:bg-slate-800 px-3 py-2 rounded-lg transition">
-                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Publicar gratis
-                </button>
-            </div>
+    <footer class="bg-white border-t border-slate-200 py-8 text-center text-xs text-slate-500 mt-12">
+        <div class="max-w-7xl mx-auto px-4 space-y-2">
+            <p>© 2026 <strong>MyUtahSpot.com</strong> - Todos los derechos reservados. Diseñado para la comunidad de Utah.</p>
+            <p class="text-slate-400">MyUtahSpot es una plataforma de conexión informativa y directorio comercial.</p>
         </div>
     </footer>
 
-    <!-- BOTÓN FLOTANTE DE PUBLICAR (MÓVIL) -->
-    <button onclick="toggleModal(true)" aria-label="Publicar mi negocio gratis" class="md:hidden fixed bottom-5 right-5 z-30 bg-brandAccent hover:bg-blue-700 text-white w-14 h-14 rounded-full shadow-xl shadow-blue-900/30 flex items-center justify-center safe-bottom">
-        <i data-lucide="plus" class="w-6 h-6"></i>
-    </button>
-
-    <!-- ASISTENTE / CHAT BOT (widget inicial, se irá mejorando) -->
-    <button id="chatLauncher" onclick="toggleChat()" aria-label="Abrir asistente de MyUtahSpot" class="fixed bottom-5 left-5 z-30 bg-brandBlue hover:bg-slate-800 text-white w-14 h-14 rounded-full shadow-xl shadow-slate-900/30 flex items-center justify-center safe-bottom transition">
-        <span class="relative inline-flex">
-            <i data-lucide="message-circle" class="w-6 h-6" id="chatLauncherIcon"></i>
-            <span id="chatPing" class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-brandSpot rounded-full ring-2 ring-white animate-pulse"></span>
-        </span>
-    </button>
-
-    <div id="chatPanel" class="hidden fixed z-40 bottom-24 left-5 w-[92vw] max-w-sm h-[70vh] max-h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden safe-bottom">
-        <div class="bg-brandBlue text-white p-4 flex items-center justify-between shrink-0">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-brandAccent flex items-center justify-center shrink-0">
-                    <i data-lucide="bot" class="w-4 h-4"></i>
-                </div>
-                <div>
-                    <p class="text-sm font-display font-bold leading-tight">Asistente MyUtahSpot</p>
-                    <p class="text-[11px] text-slate-400 leading-tight">En mejora continua · responde al instante</p>
-                </div>
-            </div>
-            <button onclick="toggleChat(false)" aria-label="Cerrar asistente" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 transition shrink-0">
-                <i data-lucide="x" class="w-4 h-4"></i>
-            </button>
-        </div>
-
-        <div id="chatMessages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50"></div>
-
-        <div id="chatQuickReplies" class="px-3 pb-2 flex flex-wrap gap-1.5 shrink-0"></div>
-
-        <form id="chatForm" class="p-3 border-t border-slate-100 bg-white flex items-center gap-2 shrink-0">
-            <label for="chatInput" class="sr-only">Escribe tu mensaje</label>
-            <input id="chatInput" type="text" autocomplete="off" placeholder="Escribe tu pregunta..." class="flex-1 border border-slate-200 rounded-full px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandAccent/30 focus:border-brandAccent transition">
-            <button type="submit" aria-label="Enviar mensaje" class="w-10 h-10 shrink-0 bg-brandAccent hover:bg-blue-700 text-white rounded-full flex items-center justify-center transition">
-                <i data-lucide="send" class="w-4 h-4"></i>
-            </button>
-        </form>
-    </div>
-
-    <!-- TOAST DE CONFIRMACIÓN -->
-    <div id="toast" role="status" aria-live="polite" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] hidden safe-bottom">
-        <div class="bg-slate-900 text-white text-sm font-medium px-4 py-3 rounded-xl shadow-2xl flex items-center gap-2 max-w-[90vw]">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-            <span id="toastMsg"></span>
-        </div>
-    </div>
-
     <!-- MODAL DE REGISTRO GRATUITO DE NEGOCIO -->
-    <div id="registerModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden" onclick="if(event.target===this) toggleModal(false)">
-        <div class="animate-popIn bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 max-h-[92vh] flex flex-col">
-
-            <!-- Encabezado del modal -->
-            <div class="bg-slate-900 text-white p-5 sm:p-6 flex items-center justify-between shrink-0">
+    <div id="registerModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden border border-slate-100 max-h-[90vh] overflow-y-auto">
+            <div class="bg-slate-900 text-white p-6 flex items-center justify-between sticky top-0 z-10">
                 <div>
-                    <h3 id="modalTitle" class="font-display font-bold text-lg">Publica tu negocio gratis</h3>
-                    <p class="text-xs text-slate-400 mt-0.5" id="modalSubtitle">Aparece en el directorio de Utah en menos de un minuto</p>
+                    <h3 class="font-bold text-lg">Publica Tu Negocio Gratis</h3>
+                    <p class="text-xs text-slate-400">Aparece en el directorio de Utah en menos de 2 minutos</p>
                 </div>
-                <button onclick="toggleModal(false)" aria-label="Cerrar" class="text-slate-400 hover:text-white shrink-0 w-9 h-9 flex items-center justify-center rounded-lg hover:bg-white/10 transition">
-                    <i data-lucide="x" class="w-5 h-5"></i>
+                <button onclick="toggleModal(false)" class="text-slate-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
             </div>
-
-            <!-- Vista 1: formulario -->
-            <form id="addSpotForm" class="overflow-y-auto flex-1">
-                <div class="p-5 sm:p-6 space-y-4">
+            <form id="addSpotForm" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Nombre del Negocio o Servicio *</label>
+                    <input type="text" id="formTitle" required placeholder="Ej. Limpieza Residencial Orem" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label for="formTitle" class="block text-xs font-bold text-slate-700 mb-1">Nombre del negocio o servicio</label>
-                        <input type="text" id="formTitle" required maxlength="60" placeholder="Ej. Limpieza Residencial Orem" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandAccent/30 focus:border-brandAccent transition">
-                        <p class="text-[11px] text-red-500 mt-1 hidden" data-error-for="formTitle">Escribe el nombre de tu negocio.</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label for="formCategory" class="block text-xs font-bold text-slate-700 mb-1">Categoría</label>
-                            <select id="formCategory" required class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandAccent/30 focus:border-brandAccent transition"></select>
-                        </div>
-                        <div>
-                            <label for="formCity" class="block text-xs font-bold text-slate-700 mb-1">Ciudad</label>
-                            <select id="formCity" required class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandAccent/30 focus:border-brandAccent transition">
-                                <option value="Orem">Orem</option>
-                                <option value="Provo">Provo</option>
-                                <option value="Salt Lake City">Salt Lake City</option>
-                                <option value="Vineyard">Vineyard</option>
-                            </select>
-                        </div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Categoría *</label>
+                        <select id="formCategory" required class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                            <!-- Se puebla dinámicamente -->
+                        </select>
                     </div>
                     <div>
-                        <label for="formPhone" class="block text-xs font-bold text-slate-700 mb-1">Teléfono / WhatsApp</label>
-                        <input type="tel" id="formPhone" required inputmode="numeric" placeholder="(801) 000-0000" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandAccent/30 focus:border-brandAccent transition">
-                        <p class="text-[11px] text-red-500 mt-1 hidden" data-error-for="formPhone">Ingresa un teléfono de 10 dígitos.</p>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between mb-1">
-                            <label for="formDescription" class="block text-xs font-bold text-slate-700">Descripción breve</label>
-                            <span class="text-[11px] text-slate-400" id="descCount">0/200</span>
-                        </div>
-                        <textarea id="formDescription" required maxlength="200" rows="3" placeholder="Describe los servicios que ofreces..." class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brandAccent/30 focus:border-brandAccent transition resize-none"></textarea>
+                        <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Ciudad *</label>
+                        <select id="formCity" required class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                            <option value="Orem">Orem</option>
+                            <option value="Provo">Provo</option>
+                            <option value="Salt Lake City">Salt Lake City</option>
+                            <option value="Vineyard">Vineyard</option>
+                        </select>
                     </div>
                 </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Teléfono / WhatsApp *</label>
+                    <input type="text" id="formPhone" required placeholder="(801) 000-0000" class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Descripción Breve *</label>
+                    <textarea id="formDescription" required rows="3" placeholder="Describe los servicios que ofreces..." class="w-full border border-slate-200 rounded-lg p-2.5 text-sm focus:outline-none focus:border-brandAccent"></textarea>
+                </div>
 
-                <div class="p-4 sm:p-5 border-t border-slate-100 bg-white flex items-center justify-end gap-3 sticky bottom-0 safe-bottom">
-                    <button type="button" onclick="toggleModal(false)" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:text-slate-800">Cancelar</button>
-                    <button type="submit" id="submitBtn" class="bg-brandAccent hover:bg-blue-700 active:bg-blue-800 text-white font-semibold px-5 py-2.5 rounded-lg text-sm transition inline-flex items-center gap-2">
-                        <i data-lucide="rocket" class="w-4 h-4"></i> Publicar ahora
-                    </button>
+                <div class="pt-2 flex items-center justify-end gap-3">
+                    <button type="button" onclick="toggleModal(false)" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800">Cancelar</button>
+                    <button type="submit" class="bg-brandAccent hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-lg text-sm transition">Publicar Ahora</button>
                 </div>
             </form>
-
-            <!-- Vista 2: éxito + compartir (oculta por defecto) -->
-            <div id="successView" class="hidden p-6 sm:p-8 text-center space-y-4 overflow-y-auto">
-                <div class="mx-auto w-14 h-14 rounded-full bg-emerald-50 flex items-center justify-center">
-                    <i data-lucide="check-circle-2" class="w-8 h-8 text-emerald-500"></i>
-                </div>
-                <div>
-                    <h4 class="font-display font-bold text-lg text-slate-900">¡Ya estás publicado!</h4>
-                    <p class="text-sm text-slate-500 mt-1">Tu negocio ya aparece en el directorio. Comparte tu página para que empiecen a contactarte.</p>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                    <button onclick="shareCurrentListing()" class="flex-1 bg-brandAccent hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-lg text-sm transition inline-flex items-center justify-center gap-2">
-                        <i data-lucide="share-2" class="w-4 h-4"></i> Compartir mi anuncio
-                    </button>
-                    <button onclick="toggleModal(false)" class="flex-1 border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold px-4 py-2.5 rounded-lg text-sm transition">
-                        Ver mi anuncio
-                    </button>
-                </div>
-                <button onclick="shareSite(true)" class="text-xs text-slate-400 hover:text-brandAccent underline underline-offset-2">
-                    ¿Conoces otro negocio? Comparte el enlace para que también publique gratis
-                </button>
-            </div>
         </div>
     </div>
 
     <!-- BASE DE DATOS Y LÓGICA DE JAVASCRIPT -->
     <script>
-        // 1. CATEGORÍAS
+        // 1. LISTA COMPLETA DE CATEGORÍAS (AMPLIADA)
         const CATEGORIES = [
             { id: 'limpieza', name: 'Limpieza', icon: 'sparkles' },
             { id: 'plomeria', name: 'Plomería', icon: 'wrench' },
-            { id: 'computacion', name: 'Soporte tech / laptops', icon: 'laptop' },
-            { id: 'restaurantes', name: 'Restaurantes & comida', icon: 'utensils' },
-            { id: 'automotriz', name: 'Mecánica & auto detail', icon: 'car' },
-            { id: 'remodelacion', name: 'Construcción / pintura', icon: 'home' },
-            { id: 'jardineria', name: 'Jardinería & paisajismo', icon: 'flower-2' },
-            { id: 'bienesraices', name: 'Bienes raíces / rentas', icon: 'building-2' },
-            { id: 'belleza', name: 'Belleza & barbería', icon: 'scissors' },
-            { id: 'clases', name: 'Clases & tutorías', icon: 'graduation-cap' },
-            { id: 'eventos', name: 'Fiestas & eventos', icon: 'party-popper' },
-            { id: 'cuidados', name: 'Cuidado de niños / mascotas', icon: 'heart' }
+            { id: 'computacion', name: 'Soporte Tech / Laptops', icon: 'laptop' },
+            { id: 'restaurantes', name: 'Restaurantes & Comida', icon: 'utensils' },
+            { id: 'automotriz', name: 'Mecánica & AutoDetail', icon: 'car' },
+            { id: 'remodelacion', name: 'Construcción / Pintura', icon: 'home' },
+            { id: 'jardineria', name: 'Jardinería & Paisajismo', icon: 'flower-2' },
+            { id: 'bienesraices', name: 'Bienes Raíces / Rentas', icon: 'building-2' },
+            { id: 'belleza', name: 'Belleza & Barbería', icon: 'scissors' },
+            { id: 'clases', name: 'Clases & Tutorías', icon: 'graduations-cap' },
+            { id: 'eventos', name: 'Fiestas & Eventos', icon: 'party-popper' },
+            { id: 'cuidados', name: 'Cuidado de Niños / Mascotas', icon: 'heart' }
         ];
 
-        // 2. PATROCINADORES (PASARELA MARQUEE)
+        // 2. EMPRESAS PATROCINADORAS QUE PAGAN PUBLICIDAD (PASARELA MARQUEE)
         const SPONSORS = [
-            { name: 'Appline Studio Tech', tag: 'Soporte & web', city: 'Utah' },
-            { name: 'Pro Clean Crew', tag: 'Limpieza pro', city: 'Orem' },
-            { name: 'Zentaurix Marketing', tag: 'Diseño & redes', city: 'Vineyard' },
-            { name: 'Utah Valley Real Estate', tag: 'Agencia inmobiliaria', city: 'Provo' },
-            { name: 'Megastore Utah', tag: 'Envíos & variedades', city: 'SLC' },
-            { name: 'AutoDetail Express', tag: 'Lavado a domicilio', city: 'Orem' }
+            { name: 'Appline Studio Tech', tag: 'Soporte & Web', city: 'Utah' },
+            { name: 'Pro Clean Crew', tag: 'Limpieza Pro', city: 'Orem' },
+            { name: 'Zentaurix Marketing', tag: 'Diseño & Redes', city: 'Vineyard' },
+            { name: 'Utah Valley Real Estate', tag: 'Agencia Inmobiliaria', city: 'Provo' },
+            { name: 'Megastore Utah', tag: 'Envíos & Variedades', city: 'SLC' },
+            { name: 'AutoDetail Express', tag: 'Lavado a Domicilio', city: 'Orem' }
         ];
 
-        // 3. BASE DE DATOS INICIAL
+        // 3. BASE DE DATOS INICIAL DE NEGOCIOS Y SERVICIOS
         let SPOTS_DATA = [
             {
-                id: 'spot-001', title: 'Pro Clean Crew Utah', category: 'limpieza', city: 'Orem',
+                id: 'spot-001',
+                title: 'Pro Clean Crew Utah',
+                category: 'limpieza',
+                city: 'Orem',
                 phone: '(801) 555-0192',
                 description: 'Servicio profesional de limpieza residencial y comercial. Garantía de satisfacción total.',
-                isPro: true, bannerImg: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80',
-                rating: 4.9, badgeText: 'Verificado Pro'
+                isPro: true,
+                bannerImg: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=80',
+                rating: 4.9,
+                badgeText: 'Verificado Pro'
             },
             {
-                id: 'spot-002', title: 'Servicio Técnico Express & Redes', category: 'computacion', city: 'Vineyard',
+                id: 'spot-002',
+                title: 'Servicio Técnico Express & Redes',
+                category: 'computacion',
+                city: 'Vineyard',
                 phone: '(385) 555-0143',
                 description: 'Reparación de computadoras, mantenimiento preventivo, instalación de redes e impresoras.',
-                isPro: true, bannerImg: 'https://images.unsplash.com/photo-1597872250970-45d00a89a01f?auto=format&fit=crop&w=600&q=80',
-                rating: 5.0, badgeText: 'Destacado'
+                isPro: true,
+                bannerImg: 'https://images.unsplash.com/photo-1597872250970-45d00a89a01f?auto=format&fit=crop&w=600&q=80',
+                rating: 5.0,
+                badgeText: 'Destacado'
             },
             {
-                id: 'spot-003', title: 'Juan Plomería & Mantenimiento', category: 'plomeria', city: 'Provo',
+                id: 'spot-003',
+                title: 'Juan Plomería & Mantenimiento',
+                category: 'plomeria',
+                city: 'Provo',
                 phone: '(801) 555-0888',
                 description: 'Reparación de fugas, calentadores de agua e instalaciones de tuberías generales.',
-                isPro: false, bannerImg: null, rating: 4.5, badgeText: 'Gratis'
+                isPro: false,
+                bannerImg: null,
+                rating: 4.5,
+                badgeText: 'Gratis'
             }
         ];
-
-        let lastPublishedId = null;
 
         // 4. INICIALIZACIÓN
         document.addEventListener('DOMContentLoaded', () => {
@@ -415,121 +267,30 @@
             initSponsors();
             renderSpots(SPOTS_DATA);
             populateCategorySelect();
-            updateHeroStat();
 
-            const searchInput = document.getElementById('searchInput');
-            const locationSelect = document.getElementById('locationSelect');
-            const liveSearch = debounce(handleSearch, 150);
-
-            searchInput.addEventListener('input', liveSearch);
-            locationSelect.addEventListener('change', handleSearch);
             document.getElementById('searchBtn').addEventListener('click', handleSearch);
-            searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); handleSearch(); } });
-
             document.getElementById('addSpotForm').addEventListener('submit', handleAddSpot);
-            document.getElementById('formPhone').addEventListener('input', formatPhoneInput);
-            document.getElementById('formDescription').addEventListener('input', updateDescCount);
-            document.addEventListener('keydown', e => { if (e.key === 'Escape') { toggleModal(false); toggleChat(false); } });
-            window.addEventListener('popstate', () => toggleModal(location.search.includes('publicar'), false));
-
-            document.getElementById('chatForm').addEventListener('submit', handleChatSubmit);
-            initChat();
-
-            // Enlace compartido con ?publicar=1 abre el formulario de inmediato en cualquier dispositivo
-            if (location.search.includes('publicar')) toggleModal(true, false);
         });
 
-        // 5. UTILIDADES
-        function debounce(fn, wait) {
-            let t;
-            return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
-        }
-
-        function waLink(phone) {
-            return `https://wa.me/1${phone.replace(/\D/g, '')}`;
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').textContent = msg;
-            toast.classList.remove('hidden');
-            clearTimeout(showToast._t);
-            showToast._t = setTimeout(() => toast.classList.add('hidden'), 3200);
-        }
-
-        async function copyToClipboard(text) {
-            try {
-                await navigator.clipboard.writeText(text);
-                return true;
-            } catch (e) {
-                const ta = document.createElement('textarea');
-                ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-                document.body.appendChild(ta); ta.select();
-                try { document.execCommand('copy'); } catch (err) {}
-                document.body.removeChild(ta);
-                return true;
-            }
-        }
-
-        function updateHeroStat() {
-            document.getElementById('heroStat').textContent =
-                `${SPOTS_DATA.length} negocios ya publicados en Utah — el tuyo puede ser el siguiente`;
-        }
-
-        // 6. COMPARTIR (funciona igual en celular, PC y tablet)
-        async function shareSite(directPublish) {
-            const url = new URL(window.location.href.split('?')[0]);
-            if (directPublish) url.search = 'publicar=1';
-            const shareData = {
-                title: 'MyUtahSpot.com',
-                text: directPublish
-                    ? 'Publica tu negocio gratis en el directorio de Utah 👇'
-                    : 'Encuentra negocios y servicios locales de confianza en Utah 👇',
-                url: url.toString()
-            };
-            if (navigator.share) {
-                try { await navigator.share(shareData); return; } catch (e) { /* el usuario canceló */ return; }
-            }
-            await copyToClipboard(url.toString());
-            showToast('Enlace copiado. ¡Compártelo para que empiecen a publicar!');
-        }
-
-        async function shareListing(spot) {
-            const shareData = {
-                title: spot.title,
-                text: `${spot.title} en ${spot.city}, Utah — encontrado en MyUtahSpot.com`,
-                url: new URL(window.location.href.split('?')[0]).toString()
-            };
-            if (navigator.share) {
-                try { await navigator.share(shareData); return; } catch (e) { return; }
-            }
-            await copyToClipboard(shareData.url);
-            showToast('Enlace copiado al portapapeles.');
-        }
-
-        function shareCurrentListing() {
-            const spot = SPOTS_DATA.find(s => s.id === lastPublishedId);
-            if (spot) shareListing(spot); else shareSite(false);
-        }
-
-        // 7. RENDERIZAR CATEGORÍAS
+        // 5. RENDERIZAR BANDERAS / BOTONES DE CATEGORÍA
         function initCategories() {
-            const counts = SPOTS_DATA.reduce((acc, s) => { acc[s.category] = (acc[s.category] || 0) + 1; return acc; }, {});
             const container = document.getElementById('categoriesContainer');
             container.innerHTML = CATEGORIES.map(cat => `
-                <button onclick="filterByCategory('${cat.id}')" class="relative flex flex-col items-center justify-center p-3 bg-white border border-slate-200 rounded-xl hover:border-brandAccent hover:shadow-sm transition group cursor-pointer text-center">
-                    ${counts[cat.id] ? `<span class="absolute top-1.5 right-1.5 text-[10px] font-bold text-slate-400">${counts[cat.id]}</span>` : ''}
-                    <i data-lucide="${cat.icon}" class="w-5 h-5 text-slate-500 group-hover:text-brandAccent mb-1"></i>
+                <button onclick="filterByCategory('${cat.id}')" class="flex flex-col items-center justify-center p-3 bg-white border border-slate-200 rounded-xl hover:border-brandAccent hover:shadow-sm transition group cursor-pointer text-center">
+                    <i data-lucide="${cat.icon || 'tag'}" class="w-5 h-5 text-slate-500 group-hover:text-brandAccent mb-1"></i>
                     <span class="text-xs font-semibold text-slate-700 leading-tight">${cat.name}</span>
                 </button>
             `).join('');
             lucide.createIcons();
         }
 
-        // 8. RENDERIZAR PATROCINADORES
+        // 6. RENDERIZAR PASARELA CONTINUA DE PATROCINADORES (MARQUEE)
         function initSponsors() {
             const container = document.getElementById('sponsorsContainer');
+            
+            // Duplicamos la lista para garantizar un ciclo infinito continuo
             const fullSponsors = [...SPONSORS, ...SPONSORS, ...SPONSORS];
+
             container.innerHTML = fullSponsors.map(item => `
                 <div class="inline-flex items-center gap-2 bg-slate-800/80 border border-slate-700/60 px-3 py-1 rounded-full text-xs hover:border-brandAccent transition cursor-pointer">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
@@ -540,51 +301,42 @@
             `).join('');
         }
 
-        // 9. POBLAR SELECT DEL FORMULARIO
+        // 7. POBLAR DESPLEGABLE DEL FORMULARIO
         function populateCategorySelect() {
             const select = document.getElementById('formCategory');
             select.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
         }
 
-        // 10. RENDERIZAR TARJETAS
+        // 8. RENDERIZAR TARJETAS EN LA REJILLA
         function renderSpots(spots) {
             const grid = document.getElementById('spotsGrid');
-
+            
             if (spots.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full text-center py-16 px-4">
-                        <i data-lucide="search-x" class="w-10 h-10 text-slate-300 mx-auto mb-3"></i>
-                        <p class="text-sm font-semibold text-slate-600">No encontramos resultados en esta zona o categoría.</p>
-                        <p class="text-xs text-slate-400 mt-1 mb-4">Prueba con otra búsqueda, o sé el primero en publicar aquí.</p>
-                        <button onclick="toggleModal(true)" class="inline-flex items-center gap-1.5 bg-brandAccent hover:bg-blue-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
-                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Publicar gratis
-                        </button>
-                    </div>`;
-                lucide.createIcons();
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-slate-400">No se encontraron resultados en esta zona o categoría.</div>`;
                 return;
             }
 
             grid.innerHTML = spots.map(spot => `
-                <div id="${spot.id}" class="bg-white rounded-xl border ${spot.isPro ? 'border-brandAccent/40 shadow-md ring-1 ring-brandAccent/10' : 'border-slate-200'} overflow-hidden flex flex-col justify-between ${spot.id === lastPublishedId ? 'animate-ringPulse' : ''}">
+                <div class="bg-white rounded-xl border ${spot.isPro ? 'border-brandAccent/40 shadow-md ring-1 ring-brandAccent/10' : 'border-slate-200'} overflow-hidden flex flex-col justify-between">
                     <div>
-                        ${spot.bannerImg
-                            ? `<div class="h-40 w-full relative bg-slate-100">
-                                <img src="${spot.bannerImg}" alt="${spot.title}" loading="lazy" decoding="async" class="h-40 w-full object-cover">
+                        <!-- Encabezado / Banner Visual -->
+                        ${spot.bannerImg 
+                            ? `<div class="h-40 w-full bg-cover bg-center relative" style="background-image: url('${spot.bannerImg}')">
                                 <span class="absolute top-3 right-3 bg-brandBlue/90 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-md">
                                     ${spot.badgeText}
                                 </span>
                                </div>`
-                            : `<div class="h-14 bg-slate-50 border-b border-slate-100 flex items-center px-4 justify-between">
-                                <span class="bg-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-1 rounded">${spot.id === lastPublishedId ? 'Nuevo' : 'Perfil estándar'}</span>
+                            : `<div class="h-16 bg-slate-100 border-b border-slate-100 flex items-center px-4 justify-between">
+                                <span class="bg-slate-200 text-slate-600 text-[10px] font-semibold px-2 py-1 rounded">Perfil Estándar</span>
                                 <span class="text-xs text-slate-400 font-medium">Gratis</span>
                                </div>`
                         }
 
                         <div class="p-5">
                             <div class="flex items-start justify-between gap-2">
-                                <h4 class="font-display font-bold text-slate-900 text-lg leading-snug">${spot.title}</h4>
-                                <span class="text-xs font-semibold text-amber-500 flex items-center gap-1 shrink-0">
-                                    ★ ${(spot.rating || 5).toFixed(1)}
+                                <h4 class="font-bold text-slate-900 text-lg leading-snug">${spot.title}</h4>
+                                <span class="text-xs font-semibold text-amber-500 flex items-center gap-1">
+                                    ★ ${spot.rating || '5.0'}
                                 </span>
                             </div>
                             <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
@@ -594,16 +346,12 @@
                         </div>
                     </div>
 
-                    <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-2">
-                        <span class="text-xs font-semibold text-slate-700 truncate">${spot.phone}</span>
-                        <div class="flex items-center gap-1.5 shrink-0">
-                            <button onclick='shareListing(${JSON.stringify(spot)})' aria-label="Compartir ${spot.title}" class="w-8 h-8 flex items-center justify-center rounded-md text-slate-400 hover:text-brandAccent hover:bg-white transition">
-                                <i data-lucide="share-2" class="w-4 h-4"></i>
-                            </button>
-                            <a href="${waLink(spot.phone)}" target="_blank" rel="noopener" class="bg-slate-900 hover:bg-brandAccent text-white text-xs font-medium px-3 py-1.5 rounded-md transition flex items-center gap-1">
-                                Contactar
-                            </a>
-                        </div>
+                    <!-- Botón de Contacto / Teléfono -->
+                    <div class="px-5 py-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-700">${spot.phone}</span>
+                        <a href="https://wa.me/1${spot.phone.replace(/\D/g,'')}" target="_blank" class="bg-slate-900 hover:bg-brandAccent text-white text-xs font-medium px-3 py-1.5 rounded-md transition flex items-center gap-1">
+                            Contactar
+                        </a>
                     </div>
                 </div>
             `).join('');
@@ -611,257 +359,68 @@
             lucide.createIcons();
         }
 
-        // 11. BÚSQUEDA Y FILTROS
+        // 9. BÚSQUEDA Y FILTROS
         function handleSearch() {
-            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const query = document.getElementById('searchInput').value.toLowerCase();
             const city = document.getElementById('locationSelect').value;
 
             const filtered = SPOTS_DATA.filter(spot => {
-                const matchesQuery = !query || spot.title.toLowerCase().includes(query) || spot.description.toLowerCase().includes(query);
+                const matchesQuery = spot.title.toLowerCase().includes(query) || spot.description.toLowerCase().includes(query);
                 const matchesCity = city === 'all' || spot.city === city;
                 return matchesQuery && matchesCity;
             });
 
-            document.getElementById('sectionTitle').innerText = query || city !== 'all' ? 'Resultados de búsqueda' : 'Todos los servicios y negocios';
-            document.getElementById('sectionSubtitle').innerText = `${filtered.length} resultado${filtered.length === 1 ? '' : 's'} encontrado${filtered.length === 1 ? '' : 's'}`;
+            document.getElementById('sectionTitle').innerText = 'Resultados de Búsqueda';
             renderSpots(filtered);
         }
 
         function filterByCategory(catId) {
             const filtered = SPOTS_DATA.filter(spot => spot.category === catId);
             const catObj = CATEGORIES.find(c => c.id === catId);
-            document.getElementById('sectionTitle').innerText = catObj ? catObj.name : catId;
-            document.getElementById('sectionSubtitle').innerText = `${filtered.length} resultado${filtered.length === 1 ? '' : 's'} en esta categoría`;
+            document.getElementById('sectionTitle').innerText = `Categoría: ${catObj ? catObj.name : catId}`;
             renderSpots(filtered);
-            document.querySelector('main').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         function resetFilter() {
             document.getElementById('searchInput').value = '';
             document.getElementById('locationSelect').value = 'all';
-            document.getElementById('sectionTitle').innerText = 'Todos los servicios y negocios';
-            document.getElementById('sectionSubtitle').innerText = 'Negocios y profesionales listos para atenderte en Utah';
+            document.getElementById('sectionTitle').innerText = 'Todos los Servicios y Negocios';
             renderSpots(SPOTS_DATA);
         }
 
-        // 12. MODAL
-        function toggleModal(show, updateUrl = true) {
+        // 10. CONTROL DEL MODAL Y REGISTRO DE NUEVO NEGOCIO
+        function toggleModal(show) {
             const modal = document.getElementById('registerModal');
             if (show) {
                 modal.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-                showFormView();
-                setTimeout(() => document.getElementById('formTitle').focus(), 50);
-                if (updateUrl) history.pushState({ modal: true }, '', '?publicar=1');
             } else {
                 modal.classList.add('hidden');
-                document.body.style.overflow = '';
-                if (updateUrl && location.search.includes('publicar')) history.pushState({}, '', location.pathname);
             }
         }
 
-        function showFormView() {
-            document.getElementById('addSpotForm').classList.remove('hidden');
-            document.getElementById('successView').classList.add('hidden');
-            document.getElementById('modalTitle').textContent = 'Publica tu negocio gratis';
-            document.getElementById('modalSubtitle').textContent = 'Aparece en el directorio de Utah en menos de un minuto';
-        }
-
-        function showSuccessView() {
-            document.getElementById('addSpotForm').classList.add('hidden');
-            document.getElementById('successView').classList.remove('hidden');
-            document.getElementById('modalTitle').textContent = '¡Listo!';
-            document.getElementById('modalSubtitle').textContent = 'Tu negocio ya es parte de MyUtahSpot';
-            lucide.createIcons();
-        }
-
-        // 13. VALIDACIÓN Y FORMATO
-        function formatPhoneInput(e) {
-            let digits = e.target.value.replace(/\D/g, '').slice(0, 10);
-            let formatted = digits;
-            if (digits.length > 6) formatted = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6)}`;
-            else if (digits.length > 3) formatted = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
-            else if (digits.length > 0) formatted = `(${digits}`;
-            e.target.value = formatted;
-        }
-
-        function updateDescCount(e) {
-            document.getElementById('descCount').textContent = `${e.target.value.length}/200`;
-        }
-
-        function setFieldError(id, show) {
-            const field = document.getElementById(id);
-            const error = document.querySelector(`[data-error-for="${id}"]`);
-            field.classList.toggle('border-red-400', show);
-            if (error) error.classList.toggle('hidden', !show);
-        }
-
-        // 14. PUBLICAR (flujo optimizado: valida, guarda, confirma y ofrece compartir de inmediato)
         function handleAddSpot(e) {
             e.preventDefault();
 
-            const title = document.getElementById('formTitle').value.trim();
-            const phoneDigits = document.getElementById('formPhone').value.replace(/\D/g, '');
-
-            const titleValid = title.length >= 2;
-            const phoneValid = phoneDigits.length === 10;
-            setFieldError('formTitle', !titleValid);
-            setFieldError('formPhone', !phoneValid);
-            if (!titleValid || !phoneValid) {
-                document.getElementById(!titleValid ? 'formTitle' : 'formPhone').focus();
-                return;
-            }
-
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Publicando...`;
-            lucide.createIcons();
-
             const newSpot = {
                 id: `spot-${Date.now()}`,
-                title,
+                title: document.getElementById('formTitle').value,
                 category: document.getElementById('formCategory').value,
                 city: document.getElementById('formCity').value,
                 phone: document.getElementById('formPhone').value,
-                description: document.getElementById('formDescription').value.trim(),
+                description: document.getElementById('formDescription').value,
                 isPro: false,
                 bannerImg: null,
                 rating: 5.0,
                 badgeText: 'Nuevo'
             };
 
-            // Simula el guardado sin bloquear la interfaz, para que se sienta instantáneo
-            requestAnimationFrame(() => {
-                SPOTS_DATA.unshift(newSpot);
-                lastPublishedId = newSpot.id;
+            SPOTS_DATA.unshift(newSpot);
 
-                document.getElementById('addSpotForm').reset();
-                document.getElementById('descCount').textContent = '0/200';
-                setFieldError('formTitle', false);
-                setFieldError('formPhone', false);
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<i data-lucide="rocket" class="w-4 h-4"></i> Publicar ahora`;
+            document.getElementById('addSpotForm').reset();
+            toggleModal(false);
 
-                initCategories();
-                updateHeroStat();
-                resetFilter();
-                showSuccessView();
-
-                setTimeout(() => {
-                    const card = document.getElementById(newSpot.id);
-                    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-            });
-        }
-
-        // 15. ASISTENTE / CHAT BOT
-        // Punto de partida sencillo basado en reglas. Pensado para poder conectarse
-        // más adelante a un backend real o a la API de Claude sin rehacer la interfaz.
-        let chatOpen = false;
-        let chatStarted = false;
-
-        const CHAT_QUICK_REPLIES = [
-            { label: '¿Cómo publico gratis?', reply: 'publicar' },
-            { label: '¿Qué categorías hay?', reply: 'categorias' },
-            { label: 'Quiero contactar un negocio', reply: 'contactar' },
-            { label: 'Hablar con soporte', reply: 'soporte' },
-        ];
-
-        function toggleChat(force) {
-            chatOpen = typeof force === 'boolean' ? force : !chatOpen;
-            document.getElementById('chatPanel').classList.toggle('hidden', !chatOpen);
-            document.getElementById('chatLauncherIcon').setAttribute('data-lucide', chatOpen ? 'chevron-down' : 'message-circle');
-            lucide.createIcons();
-            if (chatOpen) {
-                document.getElementById('chatPing').classList.add('hidden');
-                if (!chatStarted) startChat();
-                setTimeout(() => document.getElementById('chatInput').focus(), 100);
-            }
-        }
-
-        function initChat() {
-            renderQuickReplies();
-        }
-
-        function startChat() {
-            chatStarted = true;
-            addChatMessage('bot', '¡Hola! Soy el asistente de MyUtahSpot 👋 Puedo ayudarte a publicar tu negocio, encontrar categorías o resolver dudas rápidas. Este chat lo iremos mejorando poco a poco.');
-        }
-
-        function renderQuickReplies() {
-            const container = document.getElementById('chatQuickReplies');
-            container.innerHTML = CHAT_QUICK_REPLIES.map(q =>
-                `<button type="button" onclick="handleQuickReply('${q.reply}')" class="text-xs font-medium text-brandAccent bg-brandAccent/10 hover:bg-brandAccent/20 px-3 py-1.5 rounded-full transition">${q.label}</button>`
-            ).join('');
-        }
-
-        function addChatMessage(role, text) {
-            const wrap = document.getElementById('chatMessages');
-            const bubble = document.createElement('div');
-            bubble.className = role === 'user' ? 'flex justify-end' : 'flex justify-start';
-            bubble.innerHTML = `<div class="max-w-[80%] text-sm px-3.5 py-2.5 rounded-2xl ${role === 'user' ? 'bg-brandAccent text-white rounded-br-sm' : 'bg-white border border-slate-200 text-slate-700 rounded-bl-sm'}"></div>`;
-            bubble.firstElementChild.textContent = text;
-            wrap.appendChild(bubble);
-            wrap.scrollTop = wrap.scrollHeight;
-        }
-
-        function showTyping() {
-            const wrap = document.getElementById('chatMessages');
-            const typing = document.createElement('div');
-            typing.id = 'chatTyping';
-            typing.className = 'flex justify-start';
-            typing.innerHTML = `<div class="bg-white border border-slate-200 px-3.5 py-2.5 rounded-2xl rounded-bl-sm flex gap-1">
-                <span class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-pulse"></span>
-                <span class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-pulse" style="animation-delay:.15s"></span>
-                <span class="w-1.5 h-1.5 bg-slate-300 rounded-full animate-pulse" style="animation-delay:.3s"></span>
-            </div>`;
-            wrap.appendChild(typing);
-            wrap.scrollTop = wrap.scrollHeight;
-        }
-
-        function getBotReply(rawText) {
-            const text = rawText.toLowerCase();
-            if (text.includes('public') || text === 'publicar') {
-                return 'Para publicar gratis toca el botón "Publicar gratis" arriba o el botón azul flotante. Llena nombre, categoría, ciudad, teléfono y una descripción breve — tu negocio queda visible al instante.';
-            }
-            if (text.includes('categor') || text === 'categorias') {
-                return 'Tenemos categorías como limpieza, plomería, soporte técnico, restaurantes, automotriz, remodelación, jardinería, bienes raíces, belleza, clases, eventos y cuidado de niños o mascotas. Puedes verlas todas en la sección "Explorar por categoría".';
-            }
-            if (text.includes('contact') || text === 'contactar') {
-                return 'Busca el negocio con la barra de búsqueda o por categoría, y toca "Contactar" en su tarjeta para escribirle directo por WhatsApp.';
-            }
-            if (text.includes('soporte') || text.includes('ayuda') || text === 'soporte') {
-                return 'Este asistente todavía es una primera versión. Mientras lo seguimos mejorando, puedes compartir tu duda con el equipo desde el botón "Compartir" y escribirnos por ahí.';
-            }
-            if (text.includes('gracias')) {
-                return '¡Con gusto! Aquí estaré si necesitas algo más.';
-            }
-            return 'Todavía estoy aprendiendo a responder eso 🙂 Prueba con una de las opciones rápidas de abajo, o pregúntame sobre publicar, categorías o cómo contactar un negocio.';
-        }
-
-        function handleQuickReply(key) {
-            const q = CHAT_QUICK_REPLIES.find(r => r.reply === key);
-            if (q) addChatMessage('user', q.label);
-            respondTo(key);
-        }
-
-        function handleChatSubmit(e) {
-            e.preventDefault();
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-            addChatMessage('user', text);
-            input.value = '';
-            respondTo(text);
-        }
-
-        function respondTo(text) {
-            showTyping();
-            setTimeout(() => {
-                const typing = document.getElementById('chatTyping');
-                if (typing) typing.remove();
-                addChatMessage('bot', getBotReply(text));
-            }, 500 + Math.random() * 300);
+            resetFilter();
+            alert('¡Tu negocio ha sido publicado con éxito en MyUtahSpot!');
         }
     </script>
 </body>
